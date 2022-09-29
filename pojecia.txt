@@ -1,0 +1,29 @@
+1* zmienne var kontra let kontra const( czym sie roznia, kiedy jaka uzyc, wady i zalety )
+
+2* co to jest referencja w programowaniu
+
+3* co to jest petla? petle for, while
+
+4* instrukcje if-else, switch,
+
+5* funkcje , sa dwa rodzaje, arrow function oraz zwykłe function, czym sie roznia? Co to jest pure function,
+na co zwrócic uwage piszac funkcje?
+
+6* co to jest klasa? Klasy w JavaScript
+
+7* co to jest "this" w JavaScript?
+
+8* co to jest konstruktor?
+
+9* co to jest instancje klasy?
+
+10* co to jest singleton?
+
+11* co to w ogóle jest programowanie obiektowe?
+
+12* czym się różni programowanie obiektowe (OOP) od programowania funkcyjnego?
+
+13*  tablice w JavaScript, funkcje: map, filter, reduce, find, findIndex
+
+14* hashMap w JavaScript, Object.values, Object.entries, Object.keys
+
