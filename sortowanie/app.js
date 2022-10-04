@@ -3,7 +3,7 @@ for(let i =0; i<=10; i++)
     randomArray.push(Math.floor(Math.random()*1000));
 
 console.log(randomArray);
-
+console.log("----------------------------------------------------");
 
 const bubbleSort = (randomArray) =>{
     const sortedArray = randomArray;
@@ -54,9 +54,36 @@ const selectionSort = (randomArray) =>{
 const mergeSort = (randomArray) =>{
     const sortedArray = randomArray;
 
-    return sortedArray;
+    const merge = (left, right) => {
+        const temporaryArray = [];
+        while(left.length && right.length){
+            
+            if(left[0]<right[0]){
+                temporaryArray.push(left.shift());
+            } else {
+                temporaryArray.push(right.shift());
+            }
+        }
+        return [...temporaryArray , ...left , ...right];
+    }
+
+    const sort = (array) =>{
+        const half = array.length / 2;
+
+        if(array.length<=1){
+            return array;
+        }
+
+        const left = array.splice(0, half);
+        const right = array;
+
+        return merge(sort(left), sort(right));
+    }
+
+    return sort(sortedArray);
 }
 
-console.log(selectionSort(randomArray));
+console.log(mergeSort(randomArray));
+//console.log(selectionSort(randomArray));
 //console.log(insertionSort(randomArray));
 //console.log("sortowanie bąbelkowe: "+bubbleSort(randomArray));
