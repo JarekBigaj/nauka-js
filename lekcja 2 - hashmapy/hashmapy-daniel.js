@@ -19,6 +19,11 @@ const X = {
     i: undefined,
     j: null
 };
+// pobieranie elementow
+X.a
+X.d.e
+X.d.f[0]
+X.d.g[0].h
 // słownik to tablica?
 const Y = { 0: 7, 1: 5, 2: 6, 3: 2 }
 const Z = [7, 5, 6, 2]
@@ -54,3 +59,31 @@ for (let i = 0; i < obywatele.length; i++) {
     console.log('Imie:', item.imie)
 }
 
+
+const obywatele1 = [
+    {
+        Imie: "A",
+        adres: {
+            miasto: "Krakow"
+        }
+    },
+    {
+        Imie: "B",
+        adres: {
+            miasto: "Poznan"
+        }
+    },
+    {
+        Imie: "C",
+        adres: undefined
+    },
+]
+// const obywatel = '';
+// if(obywatel) {
+//     if(obywatel.adres) {
+//         if(obywatel.adres.miasto) {
+//             console.log(obywatel.adres.miasto)
+//         }
+//     }
+// }
+// console.log(obywatel?.adres?.miasto) // 5
