@@ -60,24 +60,31 @@
 // }
 
 
-// const obywatele1 = [
-//     {
-//         Imie: "Anna",
-//         adres: {
-//             miasto: "Krakow"
-//         }
-//     },
-//     {
-//         Imie: "Beata",
-//         adres: {
-//             miasto: "Poznan"
-//         }
-//     },
-//     {
-//         Imie: "Cycylia",
-//         adres: undefined
-//     },
-// ]
+const obywatele1 = [
+    {
+        imie: "Anna",
+        wiek: 25,
+        adres: {
+            miasto: "Krakow"
+        }
+    },
+    {
+        imie: "Beata",
+        wiek: 43,
+        adres: {
+            miasto: "Poznan"
+        }
+    },
+    {
+        imie: "Cycylia",
+        wiek: 89,
+        adres: undefined
+    },
+]
+// Zadanie domowe:
+// Wypisz tych obywateli ktorzy maja mniej niz 50 lat
+// Wypisz tych obywateli, ktorzy miekszaja w krakowie
+
 // https://meet.google.com/euu-wcyb-yzf?gclsrc=ds&gclsrc=ds&age=26&name=Jarek
 // console.log(Object.keys, Object.values, Object.entries)
 // console.log(Object.values(obywatele1[0]))
