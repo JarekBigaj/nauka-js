@@ -87,3 +87,25 @@ const obywatele1 = [
 //     }
 // }
 // console.log(obywatel?.adres?.miasto) // 5
+
+const animals = [
+    {
+        name: "Zosia",
+        type: "Kot"
+    },
+    {
+        name: "Piniek",
+        type: "Świnka morska"
+    },
+    {
+        name: "Bonifacy",
+        type: "pies"
+    }
+]
+
+//for(let i = 0; i<animals.length; i++){
+//    const animal = animals[i];
+//    console.log(animal.type);
+// }
+
+console.log(animals[0].type,animals[1].type,animals[2].type);
