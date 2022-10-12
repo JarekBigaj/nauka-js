@@ -132,6 +132,23 @@ const persons = [
 // });
 
 console.log(Object.values(persons)
-.map((person)=>{
-    return `${Object.keys(person)[0]}=${person.name}` 
-}).join(`&`));
+    .map((person)=>{
+        return `${Object.keys(person)[0]}=${person.name}` 
+    }).join(`&`));
+
+console.log(Object.values(persons)
+    .filter(person => person.age>30)
+    .map((person) => {
+        return `${Object.keys(person)[0]} : ${person.name}` 
+    }));
+
+console.log(Object.entries(persons)
+    .map(([key,value])=>{
+        return value;
+    })
+    .filter(person => person?.adress?.city==="Katowice")
+    .map((person) => `${person.name} ${person.lastName}`));
+
+console.log(Object.values(persons)
+    .filter(person => person.car?.type === "Hatchback")
+    .map((person) => `${Object.keys(person)[0]} : ${person.name} ${Object.keys(person)[4]} : ${person.car?.brand} ${person.car?.model}`));
