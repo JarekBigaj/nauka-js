@@ -152,3 +152,4 @@ console.log(Object.entries(persons)
 console.log(Object.values(persons)
     .filter(person => person.car?.type === "Hatchback")
     .map((person) => `${Object.keys(person)[0]} : ${person.name} ${Object.keys(person)[4]} : ${person.car?.brand} ${person.car?.model}`));
+
