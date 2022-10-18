@@ -153,3 +153,15 @@ console.log(Object.values(persons)
     .filter(person => person.car?.type === "Hatchback")
     .map((person) => `${Object.keys(person)[0]} : ${person.name} ${Object.keys(person)[4]} : ${person.car?.brand} ${person.car?.model}`));
 
+// console.log(Object.entries(persons).map(([key,value]) => {
+//     return Object.entries(value).map(([keyV,valueV])=>{
+//         return keyV;
+//     });
+// }));
+console.log(Object.entries(persons).map(([key,value]) =>{
+    const id = parseInt(key) + 1;
+    return `${id}. ${value.name} ${value.lastName} posiada ${value?.car?.brand} ${value?.car?.model}`;
+}))
+
+
+

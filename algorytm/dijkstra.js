@@ -1,4 +1,4 @@
-let graph = [
+const graph = [
     {
         x: 0,
         y: 1,
@@ -46,62 +46,69 @@ let graph = [
     }
 ]
 
-const Q = [0, 1, 2, 3, 4, 5];
-const S = [];
-const n = Q.length;
-const v = 0;
-let current;
-let next;
+const algorithmState = {
+    Q : [0, 1, 2, 3, 4, 5],
+    S : [],
+    n : 0,
+    v : 0,
+    current: [],
+    next: [],
+    d : [],
+    p : []
+};
 
-const d = [];
-const p = [];
+algorithmState.Q.forEach(element => {
+    if(element === algorithmState.v)
+        algorithmState.d.push(0);
+    else
+        algorithmState.d.push(Infinity);
+    algorithmState.p.push(-1);
+});
 
-for (let i = 0; i < n; i++) {
-    if (i === v) {
-        d.push(0);
-    } else {
-        d.push(Infinity);
+function findShortestPath(algorithmState,graph){
+    const Q = algorithmState.Q;
+    const S = algorithmState.S;
+    while(Q.length){
+        Q.forEach(element => {
+            S.push(element);
+        });
+        S.forEach(element =>{
+            Q.splice(element,1);
+        })
+        console.log(Q);
     }
-    p.push(-1);
+    algorithmState.Q=Q;
+    algorithmState.S=S;
+    return algorithmState;
 }
-
-console.log(p, d);
-
-for (let u = 0; u < Q.length; u++) {
-    if (u === v) {
-        d[u] = Q[u];
-        S.push(Q[u]);
-        Q.splice(u, 1);
-        current = d[u];
-    }
-    if (current === graph[u].x) {
-        d[graph[u].y] = graph[u].w;
-        p[graph[u].y] = graph[u].x;
-        next = u;
-    }
-}
+console.log(findShortestPath(algorithmState,graph));
 
 
-console.log(Q, S);
-console.log(p, d);
-console.log(next);
-console.log(Q.indexOf(next));
+// algorithmState.n = algorithmState.Q.length;
 
-while (Q.length) {
-    current = next;
-    S.push(Q[Q.indexOf(current)]);
-    Q.splice(Q.indexOf(current), 1);
-    graph.forEach(element => {
-        if (current === element.x) {
-            next = element.y;
-            if (d[next] > d[current] + element.w) {
-                d[next] = d[current] + element.w;
-                p[next] = element.x;
-            }
-        }
-    });
+// for (let i = 0; i < algorithmState.n; i++) {
+//     if (i === algorithmState.v) {
+//         algorithmState.d.push(0);
+//     } else {
+//         algorithmState.d.push(Infinity);
+//     }
+//     algorithmState.p.push(-1);
+// }
 
-    //console.log(Q,S);
-    //console.log(p,d);
-    //console.log(next);
-}
+// console.log(algorithmState);
+
+// for (let u = 0; u < algorithmState.Q.length; u++) {
+//     if (u === algorithmState.v) {
+//         algorithmState.d[u] = algorithmState.Q[u];
+//         algorithmState.S.push(algorithmState.Q[u]);
+//         algorithmState.Q.splice(u, 1);
+//         algorithmState.current = algorithmState.d[u];
+//     }
+//     if (algorithmState.current === graph[u].x) {
+//         algorithmState.d[graph[u].y] = graph[u].w;
+//         algorithmState.p[graph[u].y] = graph[u].x;
+//         algorithmState.next.push(graph[u].y);
+//     }
+// }
+
+
