@@ -1,114 +1,121 @@
 const graph = [
     {
-        x: 0,
-        y: 1,
-        w: 3
+        startVertex: 0,
+        endVertex: 1,
+        pathCost: 3
     },
     {
-        x: 0,
-        y: 4,
-        w: 3
+        startVertex: 0,
+        endVertex: 4,
+        pathCost: 3
     },
     {
-        x: 1,
-        y: 2,
-        w: 1
+        startVertex: 1,
+        endVertex: 2,
+        pathCost: 1
     },
     {
-        x: 2,
-        y: 3,
-        w: 3
+        startVertex: 2, 
+        endVertex: 3,
+        pathCost: 3
     },
     {
-        x: 2,
-        y: 5,
-        w: 1
+        startVertex: 2,
+        endVertex: 5,
+        pathCost: 1
     },
     {
-        x: 3,
-        y: 1,
-        w: 3
+        startVertex: 3, 
+        endVertex: 1,
+        pathCost: 3
     },
     {
-        x: 4,
-        y: 5,
-        w: 2
+        startVertex: 4,
+        endVertex: 5,
+        pathCost: 2
     },
     {
-        x: 5,
-        y: 0,
-        w: 6
+        startVertex: 5,
+        endVertex: 0,
+        pathCost: 6
     },
     {
-        x: 5,
-        y: 3,
-        w: 1
+        startVertex: 5,
+        endVertex: 3,
+        pathCost: 1
     }
 ]
 
 const algorithmState = {
-    Q : [0, 1, 2, 3, 4, 5],
-    S : [],
-    n : 0,
-    v : 0,
-    current: [],
-    next: [],
-    d : [],
-    p : []
+    startNode : [0, 1, 2, 3, 4, 5],
+    endNode : [],
+    currentVertex: 0,
+    nextVertex: 0,
+    distance : [],
+    parents : []
 };
 
-algorithmState.Q.forEach(element => {
-    if(element === algorithmState.v)
-        algorithmState.d.push(0);
-    else
-        algorithmState.d.push(Infinity);
-    algorithmState.p.push(-1);
-});
+const setDistanceAndParentsState = (state) => {
+    const parseState = state;
 
-function findShortestPath(algorithmState,graph){
-    const Q = algorithmState.Q;
-    const S = algorithmState.S;
-    while(Q.length){
-        Q.forEach(element => {
-            S.push(element);
-        });
-        S.forEach(element =>{
-            Q.splice(element,1);
-        })
-        console.log(Q);
-    }
-    algorithmState.Q=Q;
-    algorithmState.S=S;
-    return algorithmState;
+    const currentVertex = parseState.currentVertex;
+    const distance = parseState.startNode.map(item => (item === currentVertex)? 0: Infinity);
+    const parents = parseState.startNode.map(item => item = -1);
+
+    parseState.distance = distance;
+    parseState.parents = parents;
+
+    const updateStartNode = parseState.startNode.filter(vertex => vertex!==currentVertex);
+
+    parseState.startNode = updateStartNode;
+    parseState.endNode.push(currentVertex);
+    return parseState;
 }
-console.log(findShortestPath(algorithmState,graph));
+
+const shortestPath = (state,graph) =>{
+    const getCurrentVertex = state.currentVertex;
+    const relativeNodes = graph.filter(nodePath => nodePath.startVertex === getCurrentVertex);
+    const shortestNodePathWeight = relativeNodes.reduce((firstPath,secondPath) => {
+        const shortestPathWeight = secondPath.pathCost < firstPath.pathCost ? secondPath.pathCost : firstPath.pathCost;
+        return shortestPathWeight;
+    });
+    const shortestNodePath = relativeNodes.filter(nodePath => nodePath.pathCost === shortestNodePathWeight)
+    return shortestNodePath;
+}
 
 
-// algorithmState.n = algorithmState.Q.length;
+const nextStep = (state,shortestPath) =>{
+    const currentState = state;
+    const shortest = shortestPath;
+    shortest.forEach(nodePath => {
+        const updateStartNode =  currentState.startNode.filter(node => node!==nodePath.endVertex);
+        const updateCurrentVertex = currentState.startNode.filter(node => node === nodePath.endVertex);
+        //  Object.keys(curr)
 
-// for (let i = 0; i < algorithmState.n; i++) {
-//     if (i === algorithmState.v) {
-//         algorithmState.d.push(0);
-//     } else {
-//         algorithmState.d.push(Infinity);
-//     }
-//     algorithmState.p.push(-1);
-// }
-
-// console.log(algorithmState);
-
-// for (let u = 0; u < algorithmState.Q.length; u++) {
-//     if (u === algorithmState.v) {
-//         algorithmState.d[u] = algorithmState.Q[u];
-//         algorithmState.S.push(algorithmState.Q[u]);
-//         algorithmState.Q.splice(u, 1);
-//         algorithmState.current = algorithmState.d[u];
-//     }
-//     if (algorithmState.current === graph[u].x) {
-//         algorithmState.d[graph[u].y] = graph[u].w;
-//         algorithmState.p[graph[u].y] = graph[u].x;
-//         algorithmState.next.push(graph[u].y);
-//     }
-// }
+        // const updateDistance = currentState.distance.splice(nodePath.endVertex,1,nodePath.pathCost);
+        // console.log(updateDistance);
+        currentState.distance[nodePath.endVertex] = nodePath.pathCost;
+        currentState.parents[nodePath.endVertex] = nodePath.startVertex;
+        
+        currentState.currentVertex = updateCurrentVertex;
+        currentState.endNode.push(updateCurrentVertex);
+        currentState.startNode = updateStartNode;
 
 
+        // console.log(currentState);
+        return currentState;
+    });
+
+
+}
+
+
+const main = () => {
+    const setStartState = setDistanceAndParentsState(algorithmState);
+    
+    const searchShortestPath = shortestPath(algorithmState,graph);
+    const next = nextStep(algorithmState,searchShortestPath);
+
+    console.log(algorithmState);
+}
+main();
