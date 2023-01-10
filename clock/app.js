@@ -1,64 +1,60 @@
-const getCurrentTime = () =>{
+const currentTime = () =>{
     const time = new Date();
     
-    const seconds = time.getSeconds();
-    const minutes = time.getMinutes();
-    const hours = time.getHours();
-    return {seconds,minutes,hours};
-}
-
-const parseSessionTimeFormat = (hours) => {
-    const selectedTimeFormat = document.querySelector(`input[name="time_format"]:checked`).value;
+    let currentSeconds = time.getSeconds();
+    let currentMinutes = time.getMinutes();
+    let currentHours = time.getHours();
     
-    const timeFormat = "12h"
+    const selectedTimeFormat = document.querySelector(`input[name="time_format"]:checked`).value;
+    let session = (selectedTimeFormat === "12h") ? "AM": "";
 
-    const selectedTimeIs12hFormatSession = (selectedTimeFormat===timeFormat)? true:false;
-
-    const sessionAM = "AM";
-    const sessionPM = "PM";
-
-    const session = (selectedTimeIs12hFormatSession) ? ((hours>12) ? sessionPM : sessionAM) : "";
-
-    if(selectedTimeIs12hFormatSession){
-        if(hours===0){
-            hours=12;
+    if(selectedTimeFormat === "12h"){
+        if(currentHours===0){
+            currentHours=12;
         }
-        if(hours>12){
-            hours = hours-12;
+        if(currentHours>12){
+            currentHours = currentHours-12;
+            session = "PM";
         }
     }
-
-    return {session,hours};
-}
-
-const parseCurrentTime = (getTime) => {    
-    const parseSessionTime = parseSessionTimeFormat(getTime.hours);
-
-    const session = parseSessionTime.session;
-    const parseHours = parseSessionTime.hours;
     
-    const currentHours = (parseHours<10) ? "0"+parseHours:parseHours;
-    const currentMinutes = (getTime.minutes<10) ? "0"+getTime.minutes:getTime.minutes;
-    const currentSeconds = (getTime.seconds<10) ? "0"+getTime.seconds:getTime.seconds;
+    currentHours = (currentHours<10) ? "0"+currentHours:currentHours;
+    currentMinutes = (currentMinutes<10) ? "0"+currentMinutes:currentMinutes;
+    currentSeconds = (currentSeconds<10) ? "0"+currentSeconds:currentSeconds;
 
-    return {currentHours,currentMinutes,currentSeconds,session}
+    document.querySelector('[data-id="watch"]').textContent = `${currentHours} : ${currentMinutes} : ${currentSeconds} ${session}`;
 }
 
-const showTime = ({currentSeconds,currentHours,currentMinutes,session}) =>{
-    const timer = document.querySelector('[data-id="watch"]').textContent = `${currentHours} : ${currentMinutes} : ${currentSeconds} ${session}`;
-    return timer;
-}
+const updateTime = () => {
+    const {
+        currentSeconds,
+        currentMinutes,
+        currentHours,
+    } = getCurrentTime();
 
-const updateTime = () =>{
-    const getTime = getCurrentTime();
-    const parseTime = parseCurrentTime(getTime);
-    const displayTime = showTime(parseTime);  
-    return displayTime;
+    const {
+        currentSeconds: parsedCurrentSeconds,
+        currentMinutes: parsedCurrentMinutes,
+        currentHours: parsedCurrentHours,
+        session,
+    } = parseTime(
+        currentSeconds,
+        currentMinutes,
+        currentHours,
+    )
+
+    renderTime(
+        parsedCurrentSeconds,
+        parsedCurrentMinutes,
+        parsedCurrentHours,
+        session
+    )
+
 }
 
 
 const main =() =>{
-    setInterval(() => {updateTime()}, 1000);
+    setInterval(() => {currentTime()}, 1000);
 }
 
 main();
