@@ -1,121 +1,73 @@
-const graph = [
-    {
-        startVertex: 0,
-        endVertex: 1,
-        pathCost: 3
-    },
-    {
-        startVertex: 0,
-        endVertex: 4,
-        pathCost: 3
-    },
-    {
-        startVertex: 1,
-        endVertex: 2,
-        pathCost: 1
-    },
-    {
-        startVertex: 2, 
-        endVertex: 3,
-        pathCost: 3
-    },
-    {
-        startVertex: 2,
-        endVertex: 5,
-        pathCost: 1
-    },
-    {
-        startVertex: 3, 
-        endVertex: 1,
-        pathCost: 3
-    },
-    {
-        startVertex: 4,
-        endVertex: 5,
-        pathCost: 2
-    },
-    {
-        startVertex: 5,
-        endVertex: 0,
-        pathCost: 6
-    },
-    {
-        startVertex: 5,
-        endVertex: 3,
-        pathCost: 1
-    }
-]
-
-const algorithmState = {
-    startNode : [0, 1, 2, 3, 4, 5],
-    endNode : [],
-    currentVertex: 0,
-    nextVertex: 0,
-    distance : [],
-    parents : []
+const graph = {
+	A: { B: 3, E: 3 },
+	B: { C: 1},
+	C: { D: 3, F: 1 },
+	D: { B: 3},
+	E: { F: 2 },
+	F: { A: 6, D: 1}
 };
 
-const setDistanceAndParentsState = (state) => {
-    const parseState = state;
+const shortestDistanceNode = (distances, visited) => {
+	let shortest = null;
 
-    const currentVertex = parseState.currentVertex;
-    const distance = parseState.startNode.map(item => (item === currentVertex)? 0: Infinity);
-    const parents = parseState.startNode.map(item => item = -1);
+	for (const node in distances) {
+		const currentIsShortest =
+			shortest === null || distances[node] < distances[shortest];
+		if (currentIsShortest && !visited.includes(node)) {
+			shortest = node;
+		}
+	}
+	return shortest;
+};
 
-    parseState.distance = distance;
-    parseState.parents = parents;
+const findShortestPath = (graph, startNode, endNode) => {
+	let distances = {};
+	distances[endNode] = "Infinity";
+	distances = Object.assign(distances, graph[startNode]);
+	
+	const parents = { endNode: null };
+	for (const child in graph[startNode]) {
+		parents[child] = startNode;
+	}
 
-    const updateStartNode = parseState.startNode.filter(vertex => vertex!==currentVertex);
+	const visited = [];
 
-    parseState.startNode = updateStartNode;
-    parseState.endNode.push(currentVertex);
-    return parseState;
-}
+	let node = shortestDistanceNode(distances, visited);
 
-const shortestPath = (state,graph) =>{
-    const getCurrentVertex = state.currentVertex;
-    const relativeNodes = graph.filter(nodePath => nodePath.startVertex === getCurrentVertex);
-    const shortestNodePathWeight = relativeNodes.reduce((firstPath,secondPath) => {
-        const shortestPathWeight = secondPath.pathCost < firstPath.pathCost ? secondPath.pathCost : firstPath.pathCost;
-        return shortestPathWeight;
-    });
-    const shortestNodePath = relativeNodes.filter(nodePath => nodePath.pathCost === shortestNodePathWeight)
-    return shortestNodePath;
-}
+	while (node) {
+		const distance = distances[node];
+		const children = graph[node];
+		for (const child in children) {
+			if (String(child) === String(startNode)) {
+				continue;
+			} else {
+				const newDistance = distance + children[child];
+				if (!distances[child] || distances[child] > newDistance) {
+					distances[child] = newDistance;
+					parents[child] = node;
+				}
+			}
+            
+		}
+		visited.push(node);
+		node = shortestDistanceNode(distances, visited);
+	}
 
+	
+	const shortestPath = [endNode];
+	let parent = parents[endNode];
+	while (parent) {
+		shortestPath.push(parent);
+		parent = parents[parent];
+	}
+	shortestPath.reverse();
 
-const nextStep = (state,shortestPath) =>{
-    const currentState = state;
-    const shortest = shortestPath;
-    shortest.forEach(nodePath => {
-        const updateStartNode =  currentState.startNode.filter(node => node!==nodePath.endVertex);
-        const updateCurrentVertex = currentState.startNode.filter(node => node === nodePath.endVertex);
-        //  Object.keys(curr)
+	const results = {
+		distance: distances[endNode],
+		path: shortestPath,
+	};
 
-        // const updateDistance = currentState.distance.splice(nodePath.endVertex,1,nodePath.pathCost);
-        // console.log(updateDistance);
-        currentState.distance[nodePath.endVertex] = nodePath.pathCost;
-        currentState.parents[nodePath.endVertex] = nodePath.startVertex;
-        
-        currentState.currentVertex = updateCurrentVertex;
-        currentState.endNode.push(updateCurrentVertex);
-        currentState.startNode = updateStartNode;
+	return results;
+};
 
-
-        // console.log(currentState);
-        return currentState;
-    });
-
-
-}
-
-
-const main = () => {
-    const setStartState = setDistanceAndParentsState(algorithmState);
-    
-    const searchShortestPath = shortestPath(algorithmState,graph);
-    const next = nextStep(algorithmState,searchShortestPath);
-
-    console.log(algorithmState);
-}
-main();
+console.log(findShortestPath(graph,"E","A"))
