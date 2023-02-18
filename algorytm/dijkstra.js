@@ -20,15 +20,25 @@ const shortestDistanceNode = (distances, visited) => {
 	return shortest;
 };
 
-const findShortestPath = (graph, startNode, endNode) => {
+const setDistances = (endNode,startNode,graph) =>{
 	let distances = {};
 	distances[endNode] = "Infinity";
 	distances = Object.assign(distances, graph[startNode]);
-	
+	return distances;
+};
+
+const setParents = (graph,startNode) => {
 	const parents = { endNode: null };
 	for (const child in graph[startNode]) {
 		parents[child] = startNode;
 	}
+	return parents;
+}
+
+const findShortestPath = (graph, startNode, endNode) => {
+	const distances = setDistances(endNode,startNode,graph);
+
+	const parents = setParents(graph,startNode);
 
 	const visited = [];
 
